@@ -6,12 +6,16 @@ import * as Sequelize from 'sequelize';
 import process from 'process';
 
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/database.ts')[env];
+const env = process.env.NODE_ENV;
+const config = require(__dirname + '/../config/database.js')[env];
 const db = {
   sequelize: undefined,
   Sequelize: undefined,
 };
+
+console.log(basename)
+console.log(env)
+console.log(config)
 
 let sequelize: Sequelize.Sequelize;
 if (config.use_env_variable) {
