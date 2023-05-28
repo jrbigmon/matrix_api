@@ -33,7 +33,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
         references: {
-          model: { tableName: 'section_map_id' },
+          model: { tableName: 'section_maps' },
           key: 'id',
         }
       },
