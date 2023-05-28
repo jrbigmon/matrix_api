@@ -28,7 +28,7 @@ module.exports = {
       },
       section_map_index_id: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
         references: {
           model: { tableName: 'section_map_indexes' },
           key: 'id',
