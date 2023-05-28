@@ -2,8 +2,8 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('section_map_indexes', { 
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('section_map_indexes', {
       id: {
         type: Sequelize.STRING,
         primaryKey: true,
@@ -28,9 +28,9 @@ module.exports = {
       section_map_id: {
         type: Sequelize.STRING,
         allowNull: false,
-        references: { 
-          model: { tableName: 'section_maps' }, 
-          key: 'id' 
+        references: {
+          model: { tableName: 'section_maps' },
+          key: 'id',
         },
       },
       status: {
@@ -41,21 +41,21 @@ module.exports = {
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       deleted_at: {
         allowNull: true,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
     });
   },
 
-  async down (queryInterface) {
+  async down(queryInterface) {
     await queryInterface.dropTable('section_map_indexes');
-  }
+  },
 };

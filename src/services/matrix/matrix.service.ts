@@ -5,12 +5,12 @@ const matrixService = () => {
       indexColumn: 0,
       indexLine: 0,
       indexLevel: 0,
-    }
-  }
+    };
+  };
 
   return {
     showMatrix,
-  }
-}
+  };
+};
 
 export default matrixService();

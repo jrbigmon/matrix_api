@@ -1,15 +1,9 @@
 import express from 'express';
 
-import homeRoutes from "./services/home/home.router";
-import matrixRouter from "./services/matrix/matrix.router";
-
 const app = express();
 const port = 3000;
 
-const routes = [
-  homeRoutes,
-  matrixRouter,
-];
+const routes = [];
 
 app.use(routes);
 

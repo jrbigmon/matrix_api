@@ -1,5 +1,5 @@
-import { Router } from "express";
-import matrixController from "./matrix.controller";
+import { Router } from 'express';
+import matrixController from './matrix.controller';
 
 const router = Router();
 
