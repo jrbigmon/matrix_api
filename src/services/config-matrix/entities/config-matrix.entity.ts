@@ -1,7 +1,7 @@
 import { Column, Model, Table } from 'sequelize-typescript';
 
 @Table({ tableName: 'config_matrix', freezeTableName: true, timestamps: false })
-export class ConfigMatrix extends Model<ConfigMatrix> {
+export default class ConfigMatrix extends Model<ConfigMatrix> {
   @Column({ primaryKey: true })
   id: string;
 

@@ -8,12 +8,12 @@ import {
   UpdatedAt,
 } from 'sequelize-typescript';
 
-import { StorageBoxType } from '../../storage-boxes-types/entities/storage-boxes-types.entity';
-import { SectionMap } from '../../section-maps/entities/section-maps.entity';
-import { Warehouse } from '../../warehouses/entities/warehouses.entity';
+import StorageBoxType from '../../storage-boxes-types/entities/storage-boxes-types.entity';
+import SectionMap from '../../section-maps/entities/section-maps.entity';
+import Warehouse from '../../warehouses/entities/warehouses.entity';
 
 @Table({ tableName: 'sections', freezeTableName: true })
-export class Section extends Model<Section> {
+export default class Section extends Model<Section> {
   @Column({ primaryKey: true })
   id: string;
 

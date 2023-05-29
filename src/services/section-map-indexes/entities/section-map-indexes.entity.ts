@@ -1,8 +1,9 @@
 import { Column, ForeignKey, Model, Table } from 'sequelize-typescript';
-import { SectionMap } from '../../section-maps/entities/section-maps.entity';
+
+import SectionMap from '../../section-maps/entities/section-maps.entity';
 
 @Table({ tableName: 'section_map_indexes', freezeTableName: true })
-export class SectionMapIndex extends Model<SectionMapIndex> {
+export default class SectionMapIndex extends Model<SectionMapIndex> {
   @Column({ primaryKey: true })
   id: string;
 

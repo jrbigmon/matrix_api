@@ -1,45 +1,47 @@
 import {
   Column,
   CreatedAt,
+  DataType,
   DeletedAt,
-  ForeignKey,
   Model,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
 
-@Table({ tableName: 'storage_box_types', freezeTableName: true })
-export class StorageBoxType extends Model<StorageBoxType> {
-  @Column({ primaryKey: true })
-  id: string;
+import { ulid } from 'ulid';
 
-  @Column
+@Table({ tableName: 'storage_box_types' })
+export default class StorageBoxType extends Model<StorageBoxType> {
+  @Column({ primaryKey: true, type: DataType.STRING })
+  id = ulid();
+
+  @Column({ type: DataType.STRING })
   name: string;
 
-  @Column
+  @Column({ type: DataType.DECIMAL })
   height: number;
 
-  @Column
+  @Column({ type: DataType.DECIMAL })
   width: number;
 
-  @Column
+  @Column({ type: DataType.DECIMAL })
   depth: number;
 
-  @Column
+  @Column({ type: DataType.DECIMAL })
   capacity: number;
 
-  @Column
+  @Column({ type: DataType.STRING })
   status: string;
 
   @CreatedAt
-  @Column({ field: 'created_at' })
+  @Column({ field: 'created_at', type: DataType.DATE })
   createdAt: Date;
 
   @UpdatedAt
-  @Column({ field: 'updated_at' })
+  @Column({ field: 'updated_at', type: DataType.DATE })
   updatedAt: Date;
 
   @DeletedAt
-  @Column({ field: 'deleted_at' })
+  @Column({ field: 'deleted_at', type: DataType.DATE })
   deletedAt: Date;
 }

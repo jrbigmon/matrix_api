@@ -8,7 +8,7 @@ import {
 } from 'sequelize-typescript';
 
 @Table({ tableName: 'warehouses', freezeTableName: true })
-export class Warehouse extends Model<Warehouse> {
+export default class Warehouse extends Model<Warehouse> {
   @Column({ primaryKey: true })
   id: string;
 

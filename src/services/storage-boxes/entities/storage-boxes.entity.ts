@@ -8,11 +8,11 @@ import {
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
-import { StorageBoxType } from '../../storage-boxes-types/entities/storage-boxes-types.entity';
-import { SectionMapIndex } from '../../section-map-indexes/entities/section-map-indexes.entity';
+import StorageBoxType from '../../storage-boxes-types/entities/storage-boxes-types.entity';
+import SectionMapIndex from '../../section-map-indexes/entities/section-map-indexes.entity';
 
 @Table({ tableName: 'storage_boxes', freezeTableName: true })
-export class StorageBox extends Model<StorageBox> {
+export default class StorageBox extends Model<StorageBox> {
   @Column({ primaryKey: true })
   id: string;
 

@@ -1,6 +1,6 @@
-export interface BaseDTO { 
+export class BaseDTO {
   id: string;
-  createdAt?: Date,
+  createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date;
 }
