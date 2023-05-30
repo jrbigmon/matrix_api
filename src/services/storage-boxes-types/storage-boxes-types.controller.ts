@@ -1,9 +1,15 @@
 import { Request, Response } from 'express';
 import StorageBoxType from './entities/storage-boxes-types.entity';
-import { StorageBoxTypeDTO } from './entities/storage-boxes-types.dto';
 import StorageBoxTypeService from './storage-boxes-types.service';
 
 const StorageBoxController = () => {
+  const responseError = (res: Response, error: Error) => {
+    return res.status(500).json({
+      message: error.message,
+      status: 'ERROR',
+    });
+  };
+
   const create = async (
     req: Request,
     res: Response,
@@ -13,25 +19,26 @@ const StorageBoxController = () => {
 
       return res.json(record);
     } catch (error) {
-      return res.status(500).json({
-        message: error.message,
-        status: 'ERROR',
-      });
+      return responseError(res, error);
     }
   };
 
-  const destroy = (req: Request, res: Response): Promise<Response<void>> => {
+  const getAll = async (
+    req: Request,
+    res: Response,
+  ): Promise<Response<StorageBoxType[]>> => {
     try {
-      const { id } = req.params;
-      const record = await StorageBoxTypeService.destroy(id);
+      const records = await StorageBoxTypeService.getAll(req?.query);
+
+      return res.json(records);
     } catch (error) {
-      
+      responseError(res, error);
     }
-  }
+  };
 
   return {
     create,
-    delete,
+    getAll,
   };
 };
 

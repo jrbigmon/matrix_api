@@ -1,6 +1,8 @@
 import sequelize from '../../database';
+import { getQuery } from '../../utils/get-query';
 import { StorageBoxTypeDTO } from './entities/storage-boxes-types.dto';
 import StorageBoxType from './entities/storage-boxes-types.entity';
+import { QueryString, objectReference } from './types';
 
 sequelize.addModels([StorageBoxType]);
 
@@ -11,7 +13,7 @@ const StorageBoxTypeService = () => {
     if (!record) {
       throw new Error('Storage box type cannot be created');
     }
-    console.log(record);
+
     const alreadyExist = await StorageBoxType.findOne({
       where: {
         name: record.name,
@@ -36,8 +38,11 @@ const StorageBoxTypeService = () => {
     return await StorageBoxType.create(record);
   };
 
-  const getAll = async (): Promise<StorageBoxType[]> => {
-    return await StorageBoxType.findAll();
+  const getAll = async (queries?: any): Promise<StorageBoxType[]> => {
+    const queriesFormatted = getQuery<QueryString>(queries, objectReference);
+    return await StorageBoxType.findAll({
+      where: queriesFormatted,
+    });
   };
 
   return {
