@@ -3,7 +3,7 @@ import { CustomRequestQuery } from './types/custom-request-query';
 
 export const getQuery = <T>(
   queries: CustomRequestQuery<T>,
-  objectProperties: T,
+  objectProperties: any,
 ): WhereOptions<T> => {
   const queriesFormatted = {};
 

@@ -1,7 +1,6 @@
 import sequelize from '../../database';
 import { getCapacity } from '../../utils/get-capacity';
 import { getQuery } from '../../utils/get-query';
-import { StorageBoxTypeDTO } from './entities/storage-boxes-types.dto';
 import StorageBoxType from './entities/storage-boxes-types.entity';
 import { QueryString, objectReference } from './types';
 
@@ -9,7 +8,12 @@ sequelize.addModels([StorageBoxType]);
 
 const StorageBoxTypeService = () => {
   const getAll = async (queries?: any): Promise<StorageBoxType[]> => {
-    const queriesFormatted = getQuery<QueryString>(queries, objectReference);
+    let queriesFormatted;
+
+    if (queries && objectReference) {
+      queriesFormatted = getQuery<QueryString>(queries, objectReference);
+    }
+
     return await StorageBoxType.findAll({
       where: queriesFormatted,
     });
@@ -29,9 +33,7 @@ const StorageBoxTypeService = () => {
     return result;
   };
 
-  const create = async (
-    record: Partial<StorageBoxTypeDTO>,
-  ): Promise<StorageBoxType> => {
+  const create = async (record: StorageBoxType): Promise<StorageBoxType> => {
     if (!record) {
       throw new Error('Storage box type cannot be created');
     }
@@ -50,7 +52,11 @@ const StorageBoxTypeService = () => {
     }
 
     if (!record.capacity) {
-      record.capacity = getCapacity(record.height, record.depth, record.width);
+      record.capacity = getCapacity(
+        record?.height || 0,
+        record?.depth || 0,
+        record?.width || 0,
+      );
     }
 
     return await StorageBoxType.create(record);
@@ -58,7 +64,7 @@ const StorageBoxTypeService = () => {
 
   const update = async (
     id: string,
-    record: StorageBoxTypeDTO,
+    record: StorageBoxType,
   ): Promise<StorageBoxType> => {
     if (!record) {
       throw new Error('Storage box type cannot be updated');
