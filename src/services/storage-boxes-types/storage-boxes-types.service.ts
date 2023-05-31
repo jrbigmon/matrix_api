@@ -20,7 +20,13 @@ const StorageBoxTypeService = () => {
       throw new Error('Params must be provided to get storage box type!');
     }
 
-    return await StorageBoxType.findByPk(id);
+    const result = await StorageBoxType.findByPk(id);
+
+    if (!result) {
+      throw new Error('Storage box type not found!');
+    }
+
+    return result;
   };
 
   const create = async (
