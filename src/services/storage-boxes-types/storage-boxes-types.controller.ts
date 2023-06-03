@@ -14,7 +14,7 @@ const StorageBoxController = () => {
   const getAll = async (
     req: Request,
     res: Response,
-  ): Promise<Response<StorageBoxType[]>> => {
+  ): Promise<Response<any, Record<string, any>> | undefined> => {
     try {
       const records = await StorageBoxTypeService.getAll(req?.query);
 

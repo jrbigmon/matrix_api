@@ -1,9 +1,11 @@
-import { Request } from 'express';
-import { StorageBoxDTO } from './entities/storage-boxes.dto';
-import { StorageBox } from './entities/storage-boxes.entity';
+import StorageBox from './entities/storage-boxes.entity';
+import { AbstractService } from '../abstract.service';
+import { QueryString } from './types';
 
 export const StorageBoxService = () => {
-  const create = (record: StorageBoxDTO): Promise<StorageBox> => {
-    return null;
+  const methods = AbstractService<StorageBox, QueryString>(StorageBox);
+
+  return {
+    ...methods,
   };
 };

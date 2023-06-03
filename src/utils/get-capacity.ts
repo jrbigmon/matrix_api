@@ -1,14 +1,19 @@
 export const getCapacity = (...values: number[]): number => {
   if (!values.length) return 0;
 
-  const initialValue = 1;
-  const multiplyWithInitialValue = values?.reduce(
-    (accumulator, currentValue) => {
-      currentValue = currentValue > 0 ? currentValue : 1;
-      return accumulator * currentValue;
-    },
-    initialValue,
-  );
+  const valuesZero = [];
 
-  return multiplyWithInitialValue;
+  values?.forEach((value) => {
+    (!value || value === 0) ?? valuesZero.push(value);
+  });
+
+  if (valuesZero.length === values.length) return 0;
+
+  let capacity = 1;
+
+  for (const value of values) {
+    value > 0 ? (capacity *= value) : (capacity *= 1);
+  }
+
+  return capacity;
 };
