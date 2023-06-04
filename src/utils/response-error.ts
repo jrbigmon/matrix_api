@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import StatusCode from 'status-code-enum';
 
 export enum TypeError {
   ERROR = 'ERROR',
@@ -24,9 +25,10 @@ export const ErrorFnc = ({
 };
 
 export const responseError = (res: Response, error: ErrorResponse) => {
-  return res.status(error?.statusCode).json({
+  const statusCode = error?.statusCode || StatusCode.ServerErrorInternal;
+  return res.status(statusCode).json({
     message: error?.message,
-    statusCode: error?.statusCode,
-    status: error?.typeError,
+    statusCode: statusCode,
+    status: error?.typeError || TypeError.ERROR,
   });
 };
