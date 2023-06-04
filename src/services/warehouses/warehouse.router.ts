@@ -5,7 +5,7 @@ const router = Router();
 
 router.get('/warehouse', WarehouseController.getList);
 router.post('/warehouse', WarehouseController.create);
-router.delete('/warehouse', WarehouseController.destroy);
+router.delete('/warehouse/:id', WarehouseController.destroy);
 router.put('/warehouse/:id', WarehouseController.update);
 router.get('/warehouse/:id', WarehouseController.getOne);
 
