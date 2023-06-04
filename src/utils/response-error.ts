@@ -24,11 +24,40 @@ export const ErrorFnc = ({
   };
 };
 
-export const responseError = (res: Response, error: ErrorResponse) => {
-  const statusCode = error?.statusCode || StatusCode.ServerErrorInternal;
-  return res.status(statusCode).json({
-    message: error?.message,
+export type ZodTypeError = {
+  issues: [{ message: string; path: string[] }];
+};
+
+export const responseError = (
+  res: Response,
+  error: ErrorResponse | ZodTypeError,
+) => {
+  let message: string,
+    typeError: TypeError,
+    statusCode: StatusCode,
+    field: string;
+
+  if (Object.getOwnPropertyNames(error)?.includes('issues')) {
+    const zodError = error as ZodTypeError;
+    field = zodError.issues?.[0]?.path?.[0];
+    message = zodError.issues[0]?.message;
+    statusCode = StatusCode.ClientErrorBadRequest;
+    typeError = TypeError.WARN;
+  } else {
+    const errorResponse = error as ErrorResponse;
+    message = errorResponse.message;
+    statusCode = errorResponse?.statusCode || StatusCode.ServerErrorInternal;
+    typeError = errorResponse?.typeError || TypeError.ERROR;
+  }
+
+  const response = {
+    field,
+    message: message,
     statusCode: statusCode,
-    status: error?.typeError || TypeError.ERROR,
-  });
+    status: typeError,
+  };
+
+  if (!response.field) delete response.field;
+
+  return res.status(statusCode).json(response);
 };
