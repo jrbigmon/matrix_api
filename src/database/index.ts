@@ -5,6 +5,7 @@ import StorageBoxType from '../services/storage-boxes-types/entities/storage-box
 import SectionMapIndex from '../services/section-map-indexes/entities/section-map-indexes.entity';
 import SectionMap from '../services/section-maps/entities/section-maps.entity';
 import Section from '../services/sections/entities/section.entity';
+import Warehouse from '../services/warehouses/entities/warehouses.entity';
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ const models = [
   SectionMapIndex,
   SectionMap,
   Section,
+  Warehouse,
 ];
 
 export const addModels = () => {

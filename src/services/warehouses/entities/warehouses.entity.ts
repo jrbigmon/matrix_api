@@ -1,6 +1,7 @@
 import {
   Column,
   CreatedAt,
+  DataType,
   DeletedAt,
   Model,
   Table,
@@ -9,30 +10,30 @@ import {
 
 @Table({ tableName: 'warehouses', freezeTableName: true })
 export default class Warehouse extends Model<Warehouse> {
-  @Column({ primaryKey: true })
+  @Column({ primaryKey: true, type: DataType.STRING })
   id: string;
 
-  @Column
+  @Column({ type: DataType.STRING })
   name: string;
 
-  @Column
+  @Column({ type: DataType.STRING })
   description: string;
 
-  @Column
+  @Column({ type: DataType.STRING })
   code: string;
 
-  @Column
+  @Column({ type: DataType.STRING })
   status: string;
 
   @CreatedAt
-  @Column({ field: 'created_at' })
+  @Column({ field: 'created_at', type: DataType.DATE })
   createdAt: Date;
 
   @UpdatedAt
-  @Column({ field: 'updated_at' })
+  @Column({ field: 'updated_at', type: DataType.DATE })
   updatedAt: Date;
 
   @DeletedAt
-  @Column({ field: 'deleted_at' })
+  @Column({ field: 'deleted_at', type: DataType.DATE })
   deletedAt: Date;
 }
