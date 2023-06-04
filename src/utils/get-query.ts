@@ -1,14 +1,14 @@
 import { Op, WhereOptions } from 'sequelize';
-import { CustomRequestQuery } from './types/custom-request-query';
+import { ParsedQs } from 'qs';
 
 export const getQuery = <T>(
-  queries: CustomRequestQuery<T>,
+  queries: string | ParsedQs | string[] | ParsedQs[],
   objectProperties: any,
 ): WhereOptions<T> => {
   const queriesFormatted = {};
 
   for (const key in new Object(objectProperties)) {
-    if (queries.hasOwnProperty(key)) {
+    if (queries?.hasOwnProperty(key)) {
       if (Array.isArray(queries[key])) {
         const like = queries[key].map((query) => {
           return { [Op.like]: `%${query}%` };

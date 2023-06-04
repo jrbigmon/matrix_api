@@ -2,15 +2,9 @@ import { Request, Response } from 'express';
 import StorageBoxType from './entities/storage-boxes-types.entity';
 import StorageBoxTypeService from './storage-boxes-types.service';
 import storageBoxesTypesService from './storage-boxes-types.service';
+import { responseError } from '../../utils/response-error';
 
 const StorageBoxController = () => {
-  const responseError = (res: Response, error: Error) => {
-    return res.status(500).json({
-      message: error.message,
-      status: 'ERROR',
-    });
-  };
-
   const getAll = async (
     req: Request,
     res: Response,

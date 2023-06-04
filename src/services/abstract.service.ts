@@ -1,31 +1,34 @@
 import { Attributes, CreationAttributes, WhereOptions } from 'sequelize';
 import { Model, Repository } from 'sequelize-typescript';
 import { getQuery } from '../utils/get-query';
-import { CustomRequestQuery } from '../utils/types/custom-request-query';
+import { ParsedQs } from 'qs';
+import sequelize from '../database';
+import { ErrorFnc, TypeError } from '../utils/response-error';
+import StatusCode from 'status-code-enum';
 
 export interface Service<T extends Model<T>, QueryString> {
   create: (record: CreationAttributes<T>) => Promise<T>;
   update: (id: number, record: CreationAttributes<T>) => Promise<T>;
   destroy: (id: number) => Promise<void>;
   getOne: (id: number, options?: QueryString) => Promise<T>;
-  getList: (
-    options?: CustomRequestQuery<QueryString>,
-    objectReference?: QueryString,
-  ) => Promise<T[]>;
+  getList: (options?: ParsedQs) => Promise<T[]>;
 }
 
 export const AbstractService = <T extends Model<T>, QueryString>(
   model: Repository<T>,
+  objectReference?: QueryString,
 ): Service<T, QueryString> => {
+  sequelize.addModels([model]);
+
   const create = async (record: CreationAttributes<T>) => {
     if (!record) {
       throw new Error(`${model.name} cannot be create!`);
     }
 
-    let properties: any;
+    let properties: any = {};
 
     for (const key in record) {
-      if (record[key] !== null) {
+      if (record[key] !== null && properties[key]) {
         properties[key] = record[key];
       }
     }
@@ -33,7 +36,11 @@ export const AbstractService = <T extends Model<T>, QueryString>(
     const alreadyExists = await model.findOne({ where: { ...properties } });
 
     if (alreadyExists) {
-      throw new Error(`Already existing!`);
+      ErrorFnc({
+        message: `Already existing!`,
+        statusCode: StatusCode.ClientErrorBadRequest,
+        typeError: TypeError.WARN,
+      });
     }
 
     const result = await model.create(record);
@@ -43,17 +50,29 @@ export const AbstractService = <T extends Model<T>, QueryString>(
 
   const update = async (id: number, record: CreationAttributes<T>) => {
     if (!id) {
-      throw new Error(`Params must be provided to update ${model.name}`);
+      ErrorFnc({
+        message: `Params must be provided to update ${model.name}`,
+        statusCode: StatusCode.ClientErrorBadRequest,
+        typeError: TypeError.WARN,
+      });
     }
 
     if (!record) {
-      throw new Error(`${model.name} cannot be update!`);
+      ErrorFnc({
+        message: `${model.name} cannot be update!`,
+        statusCode: StatusCode.ClientErrorBadRequest,
+        typeError: TypeError.WARN,
+      });
     }
 
     const objectInDatabase = await model.findByPk(id);
 
     if (!objectInDatabase) {
-      throw new Error(`${model.name} with id: ${id} not found!`);
+      ErrorFnc({
+        message: `${model.name} with id: ${id} not found!`,
+        statusCode: StatusCode.ClientErrorBadRequest,
+        typeError: TypeError.WARN,
+      });
     }
 
     return objectInDatabase.update(record);
@@ -61,13 +80,21 @@ export const AbstractService = <T extends Model<T>, QueryString>(
 
   const destroy = async (id: number) => {
     if (!id) {
-      throw new Error(`Params must be provided to destroy ${model.name}`);
+      ErrorFnc({
+        message: `Params must be provided to destroy ${model.name}`,
+        statusCode: StatusCode.ClientErrorBadRequest,
+        typeError: TypeError.WARN,
+      });
     }
 
     const objectInDatabase = await model.findByPk(id);
 
     if (!objectInDatabase) {
-      throw new Error(`${model.name} with id: ${id} not found!`);
+      ErrorFnc({
+        message: `${model.name} with id: ${id} not found!`,
+        statusCode: StatusCode.ClientErrorBadRequest,
+        typeError: TypeError.WARN,
+      });
     }
 
     return await objectInDatabase.destroy();
@@ -75,22 +102,27 @@ export const AbstractService = <T extends Model<T>, QueryString>(
 
   const getOne = async (id: number) => {
     if (!id) {
-      throw new Error(`Params must be provided to getOne ${model.name}`);
+      ErrorFnc({
+        message: `Params must be provided to getOne ${model.name}`,
+        statusCode: StatusCode.ClientErrorBadRequest,
+        typeError: TypeError.WARN,
+      });
     }
 
     const objectInDatabase = await model.findByPk(id);
 
     if (!objectInDatabase) {
-      throw new Error(`${model.name} with id: ${id} not found!`);
+      ErrorFnc({
+        message: `${model.name} with id: ${id} not found!`,
+        statusCode: StatusCode.ClientErrorBadRequest,
+        typeError: TypeError.WARN,
+      });
     }
 
     return objectInDatabase.toJSON();
   };
 
-  const getList = async (
-    queries?: CustomRequestQuery<QueryString>,
-    objectReference?: QueryString,
-  ) => {
+  const getList = async (queries?: ParsedQs) => {
     let queriesFormatted = {};
 
     if (queries && objectReference) {

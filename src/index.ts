@@ -1,11 +1,12 @@
-import express from 'express';
+import * as express from 'express';
 
 import storageBoxTypeRouter from './services/storage-boxes-types/storage-boxes-types.router';
+import storageBoxRouter from './services/storage-boxes/storage-boxes.router';
 
 const app = express();
 const port = 3000;
 
-const routes = [storageBoxTypeRouter];
+const routes = [storageBoxTypeRouter, storageBoxRouter];
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
