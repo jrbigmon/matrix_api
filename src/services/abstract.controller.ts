@@ -3,8 +3,7 @@ import StatusCode from 'status-code-enum';
 import { Service } from './abstract.service';
 import { Model } from 'sequelize-typescript';
 import { responseError } from '../utils/response-error';
-import { z } from 'zod';
-
+import { Validator } from '../utils/types/validator';
 export interface Controller<T extends Model<T>> {
   create: (
     req: Request,
@@ -30,7 +29,7 @@ export interface Controller<T extends Model<T>> {
 
 export const AbstractController = <T extends Model<T>>(
   service: Service<T, unknown>,
-  validator?: z.ZodObject<{}>,
+  validators?: Validator,
 ): Controller<T> => {
   const getOne = async (req: Request, res: Response) => {
     try {
@@ -52,7 +51,10 @@ export const AbstractController = <T extends Model<T>>(
 
   const create = async (req: Request, res: Response) => {
     try {
-      validator?.parse({ ...req?.body });
+      if (validators?.create) {
+        validators?.create?.parse({ ...req?.body });
+      }
+
       const result = await service.create(req?.body);
       return res.status(StatusCode.SuccessCreated).json(result);
     } catch (error) {
@@ -62,6 +64,10 @@ export const AbstractController = <T extends Model<T>>(
 
   const update = async (req: Request, res: Response) => {
     try {
+      if (validators?.update) {
+        validators?.update?.parse({ ...req?.body });
+      }
+
       const result = await service.update(String(req?.params), req?.body);
       return res.json(result);
     } catch (error) {
