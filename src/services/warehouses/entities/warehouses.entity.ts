@@ -7,11 +7,12 @@ import {
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
+import { ulid } from 'ulid';
 
 @Table({ tableName: 'warehouses', freezeTableName: true })
 export default class Warehouse extends Model<Warehouse> {
   @Column({ primaryKey: true, type: DataType.STRING })
-  id: string;
+  id = ulid();
 
   @Column({ type: DataType.STRING })
   name: string;

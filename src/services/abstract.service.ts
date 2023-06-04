@@ -17,28 +17,38 @@ export interface Service<T extends Model<T>, QueryString> {
 export const AbstractService = <T extends Model<T>, QueryString>(
   model: Repository<T>,
   objectReference?: QueryString,
+  allowDuplicates?: boolean,
 ): Service<T, QueryString> => {
   const create = async (record: CreationAttributes<T>) => {
     if (!record) {
       throw new Error(`${model.name} cannot be create!`);
     }
 
-    let properties: any = {};
+    if (!allowDuplicates) {
+      let properties: any = new Object(objectReference);
+      const propertiesNames = Object.keys(properties);
 
-    for (const key in record) {
-      if (record[key] !== null && properties[key]) {
-        properties[key] = record[key];
+      for (const key in record) {
+        if (record[key] !== null && propertiesNames.includes(key)) {
+          properties[key] = record[key];
+        }
       }
-    }
 
-    const alreadyExists = await model.findOne({ where: { ...properties } });
+      for (const key in properties) {
+        if (properties[key] === null) {
+          delete properties[key];
+        }
+      }
 
-    if (alreadyExists) {
-      ErrorFnc({
-        message: `Already existing!`,
-        statusCode: StatusCode.ClientErrorBadRequest,
-        typeError: TypeError.WARN,
-      });
+      const alreadyExists = await model.findOne({ where: { ...properties } });
+
+      if (alreadyExists) {
+        ErrorFnc({
+          message: `Already existing!`,
+          statusCode: StatusCode.ClientErrorBadRequest,
+          typeError: TypeError.WARN,
+        });
+      }
     }
 
     const result = await model.create(record);
