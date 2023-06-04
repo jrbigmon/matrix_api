@@ -2,6 +2,7 @@ import * as express from 'express';
 
 import storageBoxTypeRouter from './services/storage-boxes-types/storage-boxes-types.router';
 import storageBoxRouter from './services/storage-boxes/storage-boxes.router';
+import { addModels } from './database';
 
 const app = express();
 const port = 3000;
@@ -14,5 +15,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(routes);
 
 app.listen(port, () => {
+  addModels();
   console.log('Server is running in port: ' + port);
 });

@@ -3,6 +3,6 @@ import StorageBoxController from './storage-boxes.controller';
 
 const router = Router();
 
-router.post('/storage-box', StorageBoxController.create);
-
+router.post('/storage-boxes', StorageBoxController.create);
+router.get('/storage-boxes', StorageBoxController.getList);
 export default router;

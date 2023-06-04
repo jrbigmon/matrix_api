@@ -7,7 +7,6 @@ import {
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
-
 import { ulid } from 'ulid';
 
 @Table({ tableName: 'storage_box_types' })

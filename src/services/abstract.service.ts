@@ -18,8 +18,6 @@ export const AbstractService = <T extends Model<T>, QueryString>(
   model: Repository<T>,
   objectReference?: QueryString,
 ): Service<T, QueryString> => {
-  sequelize.addModels([model]);
-
   const create = async (record: CreationAttributes<T>) => {
     if (!record) {
       throw new Error(`${model.name} cannot be create!`);

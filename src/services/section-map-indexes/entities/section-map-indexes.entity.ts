@@ -2,7 +2,11 @@ import { Column, ForeignKey, Model, Table } from 'sequelize-typescript';
 
 import SectionMap from '../../section-maps/entities/section-maps.entity';
 
-@Table({ tableName: 'section_map_indexes', freezeTableName: true })
+@Table({
+  tableName: 'section_map_indexes',
+  freezeTableName: true,
+  timestamps: false,
+})
 export default class SectionMapIndex extends Model<SectionMapIndex> {
   @Column({ primaryKey: true })
   id: string;
