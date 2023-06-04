@@ -12,7 +12,7 @@ export interface Controller<T extends Model<T>> {
   update: (
     req: Request,
     res: Response,
-  ) => Promise<Response<void, Record<string, void>>>;
+  ) => Promise<Response<T, Record<string, T>>>;
   destroy: (
     req: Request,
     res: Response,
@@ -32,7 +32,7 @@ export const AbstractController = <T extends Model<T>>(
 ): Controller<T> => {
   const getOne = async (req: Request, res: Response) => {
     try {
-      const result = await service.getOne(Number(req?.params));
+      const result = await service.getOne(String(req?.params));
       return res.json(result);
     } catch (error) {
       return responseError(res, error);
@@ -59,7 +59,7 @@ export const AbstractController = <T extends Model<T>>(
 
   const update = async (req: Request, res: Response) => {
     try {
-      const result = await service.update(Number(req?.params), req?.body);
+      const result = await service.update(String(req?.params), req?.body);
       return res.json(result);
     } catch (error) {
       return responseError(res, error);
@@ -68,7 +68,7 @@ export const AbstractController = <T extends Model<T>>(
 
   const destroy = async (req: Request, res: Response) => {
     try {
-      await service.destroy(Number(req?.params));
+      await service.destroy(String(req?.params));
       return res.status(StatusCode.SuccessNoContent).json();
     } catch (error) {
       return responseError(res, error);

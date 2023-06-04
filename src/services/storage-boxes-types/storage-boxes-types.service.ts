@@ -1,37 +1,16 @@
+import { CreationAttributes } from 'sequelize';
 import sequelize from '../../database';
 import { getCapacity } from '../../utils/get-capacity';
 import { getQuery } from '../../utils/get-query';
+import { AbstractService } from '../abstract.service';
 import StorageBoxType from './entities/storage-boxes-types.entity';
 import { QueryString, objectReference } from './types';
 
-sequelize.addModels([StorageBoxType]);
-
 const StorageBoxTypeService = () => {
-  const getAll = async (queries?: any): Promise<StorageBoxType[]> => {
-    let queriesFormatted;
-
-    if (queries && objectReference) {
-      queriesFormatted = getQuery<QueryString>(queries, objectReference);
-    }
-
-    return await StorageBoxType.findAll({
-      where: queriesFormatted,
-    });
-  };
-
-  const getOne = async (id: string): Promise<StorageBoxType> => {
-    if (!id) {
-      throw new Error('Params must be provided to get storage box type!');
-    }
-
-    const result = await StorageBoxType.findByPk(id);
-
-    if (!result) {
-      throw new Error('Storage box type not found!');
-    }
-
-    return result;
-  };
+  const methods = AbstractService<StorageBoxType, QueryString>(
+    StorageBoxType,
+    objectReference,
+  );
 
   const create = async (record: StorageBoxType): Promise<StorageBoxType> => {
     if (!record) {
@@ -64,7 +43,7 @@ const StorageBoxTypeService = () => {
 
   const update = async (
     id: string,
-    record: StorageBoxType,
+    record: CreationAttributes<StorageBoxType>,
   ): Promise<StorageBoxType> => {
     if (!record) {
       throw new Error('Storage box type cannot be updated');
@@ -93,31 +72,14 @@ const StorageBoxTypeService = () => {
       throw new Error('Storage box type not found');
     }
 
-    const result = await storageBoxTypeToUpdate.update(newStorageBoxType);
-
-    return result;
+    return await storageBoxTypeToUpdate.update(newStorageBoxType);
   };
 
-  const destroy = async (id: string): Promise<void> => {
-    if (!id) {
-      throw new Error('Params must be provided to delete storage box type!');
-    }
-
-    const storageBoxTypeToDelete = await StorageBoxType.findByPk(id);
-
-    if (!storageBoxTypeToDelete) {
-      throw new Error('Storage box type not found');
-    }
-
-    return await storageBoxTypeToDelete.destroy();
-  };
+  methods.create = create;
+  methods.update = update;
 
   return {
-    create,
-    update,
-    getAll,
-    getOne,
-    destroy,
+    ...methods,
   };
 };
 

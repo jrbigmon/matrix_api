@@ -8,9 +8,9 @@ import StatusCode from 'status-code-enum';
 
 export interface Service<T extends Model<T>, QueryString> {
   create: (record: CreationAttributes<T>) => Promise<T>;
-  update: (id: number, record: CreationAttributes<T>) => Promise<T>;
-  destroy: (id: number) => Promise<void>;
-  getOne: (id: number, options?: QueryString) => Promise<T>;
+  update: (id: string, record: CreationAttributes<T>) => Promise<T>;
+  destroy: (id: string) => Promise<void>;
+  getOne: (id: string, options?: QueryString) => Promise<T>;
   getList: (options?: ParsedQs) => Promise<T[]>;
 }
 
@@ -48,7 +48,7 @@ export const AbstractService = <T extends Model<T>, QueryString>(
     return result.toJSON();
   };
 
-  const update = async (id: number, record: CreationAttributes<T>) => {
+  const update = async (id: string, record: CreationAttributes<T>) => {
     if (!id) {
       ErrorFnc({
         message: `Params must be provided to update ${model.name}`,
@@ -78,7 +78,7 @@ export const AbstractService = <T extends Model<T>, QueryString>(
     return objectInDatabase.update(record);
   };
 
-  const destroy = async (id: number) => {
+  const destroy = async (id: string) => {
     if (!id) {
       ErrorFnc({
         message: `Params must be provided to destroy ${model.name}`,
@@ -100,7 +100,7 @@ export const AbstractService = <T extends Model<T>, QueryString>(
     return await objectInDatabase.destroy();
   };
 
-  const getOne = async (id: number) => {
+  const getOne = async (id: string) => {
     if (!id) {
       ErrorFnc({
         message: `Params must be provided to getOne ${model.name}`,
