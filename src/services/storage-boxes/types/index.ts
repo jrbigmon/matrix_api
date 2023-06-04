@@ -6,7 +6,7 @@ export type QueryString = {
   status?: string;
 };
 
-export const objectReference = {
+export const objectReference: QueryString = {
   id: null,
   number: null,
   typeId: null,

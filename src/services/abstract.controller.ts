@@ -33,7 +33,7 @@ export const AbstractController = <T extends Model<T>>(
 ): Controller<T> => {
   const getOne = async (req: Request, res: Response) => {
     try {
-      const result = await service.getOne(String(req?.params));
+      const result = await service.getOne(req?.params?.id);
       return res.json(result);
     } catch (error) {
       return responseError(res, error);
@@ -68,7 +68,7 @@ export const AbstractController = <T extends Model<T>>(
         validators?.update?.parse({ ...req?.body });
       }
 
-      const result = await service.update(String(req?.params), req?.body);
+      const result = await service.update(req?.params?.id, req?.body);
       return res.json(result);
     } catch (error) {
       return responseError(res, error);
@@ -77,7 +77,7 @@ export const AbstractController = <T extends Model<T>>(
 
   const destroy = async (req: Request, res: Response) => {
     try {
-      await service.destroy(String(req?.params));
+      await service.destroy(req?.params?.id);
       return res.status(StatusCode.SuccessNoContent).json();
     } catch (error) {
       return responseError(res, error);
