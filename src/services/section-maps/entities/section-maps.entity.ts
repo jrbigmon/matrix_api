@@ -1,17 +1,21 @@
 import {
   BelongsTo,
   Column,
+  CreatedAt,
   DataType,
+  DeletedAt,
   ForeignKey,
   Model,
   Table,
+  UpdatedAt,
 } from 'sequelize-typescript';
 import ConfigMatrix from '../../config-matrix/entities/config-matrix.entity';
+import { ulid } from 'ulid';
 
 @Table({ tableName: 'section_maps ', freezeTableName: true })
 export default class SectionMap extends Model<SectionMap> {
   @Column({ primaryKey: true, type: DataType.STRING })
-  id: string;
+  id = ulid();
 
   @Column({ type: DataType.STRING })
   name: string;
@@ -51,4 +55,16 @@ export default class SectionMap extends Model<SectionMap> {
 
   @Column({ type: DataType.STRING })
   status: string;
+
+  @CreatedAt
+  @Column({ field: 'created_at', type: DataType.DATE })
+  createdAt: Date;
+
+  @UpdatedAt
+  @Column({ field: 'updated_at', type: DataType.DATE })
+  updatedAt: Date;
+
+  @DeletedAt
+  @Column({ field: 'deleted_at', type: DataType.DATE })
+  deletedAt: Date;
 }

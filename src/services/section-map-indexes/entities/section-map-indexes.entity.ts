@@ -1,9 +1,12 @@
 import {
   Column,
+  CreatedAt,
   DataType,
+  DeletedAt,
   ForeignKey,
   Model,
   Table,
+  UpdatedAt,
 } from 'sequelize-typescript';
 
 import SectionMap from '../../section-maps/entities/section-maps.entity';
@@ -36,4 +39,16 @@ export default class SectionMapIndex extends Model<SectionMapIndex> {
 
   @Column({ type: DataType.STRING })
   status: string;
+
+  @CreatedAt
+  @Column({ field: 'created_at', type: DataType.DATE })
+  createdAt: Date;
+
+  @UpdatedAt
+  @Column({ field: 'updated_at', type: DataType.DATE })
+  updatedAt: Date;
+
+  @DeletedAt
+  @Column({ field: 'deleted_at', type: DataType.DATE })
+  deletedAt: Date;
 }
