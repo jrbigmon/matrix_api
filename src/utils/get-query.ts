@@ -3,7 +3,7 @@ import { ParsedQs } from 'qs';
 
 export const getQuery = <T>(
   queries: string | ParsedQs | string[] | ParsedQs[],
-  objectProperties: any,
+  objectProperties: unknown,
 ): WhereOptions<T> => {
   const queriesFormatted = {};
 

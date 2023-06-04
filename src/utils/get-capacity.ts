@@ -1,7 +1,7 @@
 export const getCapacity = (...values: number[]): number => {
   if (!values.length) return 0;
 
-  const valuesZero = [];
+  const valuesZero: number[] = [];
 
   values?.forEach((value) => {
     (!value || value === 0) ?? valuesZero.push(value);

@@ -1,7 +1,5 @@
 import { CreationAttributes } from 'sequelize';
-import sequelize from '../../database';
 import { getCapacity } from '../../utils/get-capacity';
-import { getQuery } from '../../utils/get-query';
 import { AbstractService } from '../abstract.service';
 import StorageBoxType from './entities/storage-boxes-types.entity';
 import { QueryString, objectReference } from './types';
