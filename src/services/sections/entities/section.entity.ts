@@ -1,6 +1,8 @@
 import {
+  BelongsTo,
   Column,
   CreatedAt,
+  DataType,
   DeletedAt,
   ForeignKey,
   Model,
@@ -11,39 +13,49 @@ import {
 import StorageBoxType from '../../storage-boxes-types/entities/storage-boxes-types.entity';
 import SectionMap from '../../section-maps/entities/section-maps.entity';
 import Warehouse from '../../warehouses/entities/warehouses.entity';
+import { ulid } from 'ulid';
 
 @Table({ tableName: 'sections', freezeTableName: true })
 export default class Section extends Model<Section> {
-  @Column({ primaryKey: true })
-  id: string;
+  @Column({ primaryKey: true, type: DataType.STRING })
+  id = ulid();
 
-  @Column
+  @Column({ type: DataType.STRING })
   name: string;
 
   @ForeignKey(() => Warehouse)
-  @Column({ field: 'warehouse_id' })
-  warehouseId: number;
+  @Column({ field: 'warehouse_id', type: DataType.STRING })
+  warehouseId: string;
+
+  @BelongsTo(() => Warehouse, 'warehouseId')
+  warehouse: Warehouse;
 
   @ForeignKey(() => StorageBoxType)
-  @Column({ field: 'storage_box_type_id ' })
-  storageBoxTypeId: number;
+  @Column({ field: 'storage_box_type_id', type: DataType.STRING })
+  storageBoxTypeId: string;
+
+  @BelongsTo(() => StorageBoxType, 'storageBoxTypeId')
+  storageBoxType: StorageBoxType;
 
   @ForeignKey(() => SectionMap)
-  @Column({ field: 'section_map_id ' })
-  sectionMapId: number;
+  @Column({ field: 'section_map_id', type: DataType.STRING })
+  sectionMapId?: string;
 
-  @Column
+  @BelongsTo(() => SectionMap, 'sectionMapId')
+  sectionMap?: SectionMap;
+
+  @Column({ type: DataType.STRING })
   status: string;
 
   @CreatedAt
-  @Column({ field: 'created_at' })
+  @Column({ field: 'created_at', type: DataType.DATE })
   createdAt: Date;
 
   @UpdatedAt
-  @Column({ field: 'updated_at' })
+  @Column({ field: 'updated_at', type: DataType.DATE })
   updatedAt: Date;
 
   @DeletedAt
-  @Column({ field: 'deleted_at' })
+  @Column({ field: 'deleted_at', type: DataType.DATE })
   deletedAt: Date;
 }

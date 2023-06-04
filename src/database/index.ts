@@ -6,6 +6,7 @@ import SectionMapIndex from '../services/section-map-indexes/entities/section-ma
 import SectionMap from '../services/section-maps/entities/section-maps.entity';
 import Section from '../services/sections/entities/section.entity';
 import Warehouse from '../services/warehouses/entities/warehouses.entity';
+import ConfigMatrix from '../services/config-matrix/entities/config-matrix.entity';
 
 dotenv.config();
 
@@ -18,11 +19,12 @@ const sequelize = new Sequelize({
 });
 
 const models = [
+  ConfigMatrix,
+  Section,
+  SectionMap,
+  SectionMapIndex,
   StorageBox,
   StorageBoxType,
-  SectionMapIndex,
-  SectionMap,
-  Section,
   Warehouse,
 ];
 

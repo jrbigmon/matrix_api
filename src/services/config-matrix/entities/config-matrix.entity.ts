@@ -1,22 +1,23 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { ulid } from 'ulid';
 
 @Table({ tableName: 'config_matrix', freezeTableName: true, timestamps: false })
 export default class ConfigMatrix extends Model<ConfigMatrix> {
-  @Column({ primaryKey: true })
-  id: string;
+  @Column({ primaryKey: true, type: DataType.STRING })
+  id = ulid();
 
-  @Column
+  @Column({ type: DataType.STRING })
   type: string;
 
-  @Column
+  @Column({ type: DataType.STRING })
   initial: string;
 
-  @Column
+  @Column({ type: DataType.STRING })
   prefix: string;
 
-  @Column
+  @Column({ type: DataType.STRING })
   suffix: string;
 
-  @Column
+  @Column({ type: DataType.STRING })
   ordination: string;
 }
